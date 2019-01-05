@@ -99,9 +99,11 @@ PersistGraphQLPlugin.prototype.apply = function(compiler) {
                 } else if (self.options.hashQuery) {
                   var queryContents = graphql.print(eval(sourceLines.join('\n')));
                   var queryId = self.options.hashQuery(queryContents);
+
+                  // MLM:for me for some reason this needs to be len-3 to get before the export
                   sourceLines = sourceLines
-                    .slice(0, len - 1)
-                    .concat(['doc.documentId = "' + queryId + '";', sourceLines[len - 1]]);
+                    .slice(0, len - 3)
+                    .concat(['doc.documentId = "' + queryId + '";', sourceLines[len - 3]]);
                 }
                 graphQLString += graphql.print(eval(sourceLines.join('\n')));
               } else if (self.options.jsRegex.test(module.resource)) {
